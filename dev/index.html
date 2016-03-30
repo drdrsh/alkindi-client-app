@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>نموذج تفاعلي للعلاقات بين كتب التراث وكتابها - الفهرست</title>
+
+	<!-- build:css:dist style/style.css -->
+    <link rel="stylesheet" type="text/css" href="./assets/lib/jquery-ui/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/lib/vis/vis.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/lib/simplebar/simplebar.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/app/css/style.css" />
+	<!-- /build -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="HandheldFriendly" content="True">
+	<meta name="description" content="نموذج تفاعلي للعلاقات بين كتب التراث وكتابها">
+	<meta name="author" content="Mostafa Abdelraouf">
+	<meta property="og:title" content="نموذج تفاعلي للعلاقات بين كتب التراث وكتابها - الفهرست" />
+	<meta property="og:description" content="نموذج تفاعلي للعلاقات بين كتب التراث وكتابها." />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="http://experiments.alfehrest.org/public/alkindi/images/thumb.png">
+	<meta property="og:url" content="http://experiments.alfehrest.org/public/alkindi/">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="نموذج تفاعلي للعلاقات بين كتب التراث وكتابها.">
+	<meta name="twitter:description" content="نموذج تفاعلي للعلاقات بين كتب التراث وكتابها.">
+	<meta name="twitter:creator" content="@alfehrest">
+
+</head>
+<body>
+	<div id="info-panel" class="simplebar" data-simplebar-direction="vertical">
+		<div class="info-container ">
+			<div class="close"></div>
+			<h1></h1>
+			<h2></h2>
+			<p class="loading"></p>
+			<ol></ol>
+		</div>
+	</div>
+	<div id="top-panel">
+		<h1 id="logo"></h1>
+		<div id="top-left-pane">
+			<div class="pane-button help"></div>
+			<div class="pane-button about"></div>
+			<div class="pane-button restart"></div>
+			<div class="search"><input type="text" placeholder="بحث"></div>
+		</div>
+
+		<div id="lower-left-pane">
+			<a class="share facebook" href="http://www.facebook.com/sharer.php?u=http://experiments.alfehrest.org/public/alkindi/" target="_blank"></a>
+			<a class="share google" href="https://plus.google.com/share?url=http://experiments.alfehrest.org/public/alkindi/" target="_blank"></a>
+			<a class="share twitter" href="https://twitter.com/share?url=http://experiments.alfehrest.org/public/alkindi/&text=نموذج تفاعلي للعلاقات بين كتب التراث وكتابها" target="_blank"></a>
+		</div>
+
+		<div id="graph-container"></div>
+
+
+		<div id="about-dialog">
+			<p>
+				هذا النموذج يعرض العلاقات بين الكثير من كتب التراث بعضها البعض و علاقات هذه الكتب بالكتاب والشراح.
+				 النموذج تابع لمشروع
+				<a href="http://blog.alfehrest.org">الفهرست</a>
+				وهو مشروع يهدف لعرض التاريخ بشكل تفاعلي.
+			</p>
+			<p>
+				البيانات المعروضة في هذا النموذج مستقاة من مشروع
+				<a href="http://alkindi4.ideo-cairo.org/">الكندي 4</a>
+				التابع
+				<a href="http://www.ideo-cairo.org/sommaire.php?lang=ar">
+				للمعهد الدومينيكاني للدراسات الشرقية
+				</a>.
+			</p>
+
+		</div>
+
+	</div>
+
+	<div id="bottom-panel">
+		<div class="container ">
+			<h1></h1>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">var AlFehrestNS = {};</script>
+
+	<!-- build:remove:dist -->
+	<script>
+		AlFehrestNS.imagePath = "./assets/app/images/";
+		AlFehrestNS.env = "development";
+	</script>
+	<!-- /build -->
+
+	<!-- build:template:dist
+    <script>
+    AlFehrestNS.imagePath="<%= imagePath %>";
+    AlFehrestNS.env = "production";
+    </script>
+    /build -->
+
+	<!-- build:js:dist js/scripts.js -->
+	<script type="text/javascript" src="./assets/lib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="./assets/lib/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="./assets/lib/vis/vis.js"></script>
+	<script type="text/javascript" src="./assets/lib/simplebar/simplebar.js"></script>
+
+	<script type="text/javascript" src="./assets/app/js/Language.js"></script>
+	<script type="text/javascript" src="./assets/app/language/ar.js"></script>
+	<script type="text/javascript" src="./assets/app/js/SearchManager.js"></script>
+	<script type="text/javascript" src="./assets/app/js/LocalStorage.js"></script>
+	<script type="text/javascript" src="./assets/app/js/main.js"></script>
+	<script type="text/javascript" src="./assets/app/js/HelpEngine.js"></script>
+	<script type="text/javascript" src="./assets/app/js/main-req.js"></script>
+	<script type="text/javascript" src="./assets/app/js/Config.js"></script>
+	<script type="text/javascript" src="./assets/app/js/template.js"></script>
+	<script type="text/javascript" src="./assets/app/js/main-vis.js"></script>
+	<!-- /build -->
+
+	<script>AlFehrestNS.loadLanguage('ar');</script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-990635-18', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
