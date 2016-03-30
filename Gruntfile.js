@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 			options: {
 				port: 9000,
 				serve: {
-					path: './dev/'
+					path: './dist/'
 				}
 			}
 		},
@@ -104,14 +104,14 @@ module.exports = function(grunt) {
                         "dev/assets/lib/jquery-ui/jquery-ui.js",
                         "dev/assets/lib/vis/vis.js",
                         "dev/assets/lib/simplebar/simplebar.js",
-                        "dev/assets/app/js/language.js",
+                        "dev/assets/app/js/Language.js",
                         "dev/assets/app/language/ar.js",
                         "dev/assets/app/js/SearchManager.js",
                         "dev/assets/app/js/LocalStorage.js",
                         "dev/assets/app/js/main.js",
-                        "dev/assets/app/js/help.js",
+                        "dev/assets/app/js/HelpEngine.js",
                         "dev/assets/app/js/main-req.js",
-                        "dev/assets/app/js/config.js",
+                        "dev/assets/app/js/Config.js",
                         "dev/assets/app/js/template.js",
                         "dev/assets/app/js/main-vis.js"
                     ]
