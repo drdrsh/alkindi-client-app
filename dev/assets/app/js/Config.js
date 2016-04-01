@@ -7,7 +7,7 @@ AlFehrestNS.Config = function(key) {
             'MAX_NAME_LENGTH' : 50
         },
         'development' :{
-            'url' : 'http://192.168.0.11:6001/alkindi/',
+            'url' : 'http://api.alfehrest.org/alkindi/',
             'startupNodeId' : 'authority_N1Ypy-H_dBL0l',
             'MAX_REL_COUNT': 10,
             'MAX_NAME_LENGTH' : 50
