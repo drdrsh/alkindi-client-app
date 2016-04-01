@@ -44,7 +44,7 @@ body {
 	z-index: 5;
 	border-radius: 0 0 15px 15px;
 	transition-property: transform;
-	transition-duration: 0.3s;
+	transition-duration: .3s;
 	transform: translate3d(0, -80px, 0);
 }
 #search-container.active {
@@ -77,8 +77,8 @@ body {
 	margin-left:-40px;
 	z-index:99;
 	background-color:#18292e;
-	transition-property: margin, left;
-	transition-duration: 0.3s;
+	transition-property: margin, left, right, width;
+	transition-duration: .3s;
 	color:white;
 	box-shadow: 0px 0px 10px black;
 	box-sizing: content-box;
@@ -113,7 +113,7 @@ body > h1.logo {
 
 a.share {
 	transition-property: transform;
-	transition-duration: 0.3s;
+	transition-duration: .3s;
 	transform: translate3d(0, 0, 0);
 	width: 28px;
 	height:28px;
@@ -182,7 +182,7 @@ a.share.reddit  {  background-image: url('../images/reddit.png');  }
 li.search div {
 	transform: translate3d(0, 0, 0);
 	transition-property: transform, opacity;
-	transition-duration: 0.3s;
+	transition-duration: .3s;
 }
 
 li.search div.active {
@@ -269,7 +269,7 @@ li.search input.active {
 	right: 0;
 	z-index:1;
 	transition-property: transform;
-	transition-duration: 0.3s;
+	transition-duration: .3s;
 	transform: translate3d(0, 0, 0);
 }
 
@@ -291,7 +291,7 @@ li.search input.active {
 	height: 100%;
 	z-index:3;
 	transition-property: transform;
-	transition-duration: 0.3s;
+	transition-duration: .3s;
 	background-color:#18292e;
 	color:white;
 	box-shadow: 0px 0px 5px #666;
@@ -532,7 +532,7 @@ li.search input.active {
 
 #top-left-pane .pane-button {
 	transition-property: transform;
-	transition-duration: 0.3s;
+	transition-duration: .3s;
 	transform: translate3d(0, 0, 0);
 	margin-top: 10px;
 	margin-left: 10px;
@@ -667,8 +667,11 @@ span.rel.work_50 {
 	}
 
 	#menu-panel {
+		transition-property: width, left;
+		transition-duration: .3s;
 		width: 160px;
 	}
+
 
 	#side-panel .logo {
 		background-image: url('../images/logo-white.png');
@@ -678,14 +681,10 @@ span.rel.work_50 {
 		background-position: center center;
 		background-repeat: no-repeat;
 		transition-property: width, height, opacity, margin;
-		transition-duration: 0.3s;
+		transition-duration: .3s;
 		margin:0;
 	}
 
-	#side-panel {
-		width:160px;
-		margin-left:-160px;
-	}
 
 	.social-media-pane {
 		position: absolute;
@@ -695,11 +694,16 @@ span.rel.work_50 {
 		width:auto;
 	}
 
-	#side-panel.is-slid {
-		margin-left:0px;
+	#side-panel {
 		width:420px;
+		margin-right:-260px;
 		right:0;
 		left:auto;
+	}
+
+	#side-panel.is-slid {
+		margin-right:0px;
+		right:0;
 	}
 
 	#side-panel.is-slid #menu-panel {
@@ -727,7 +731,7 @@ span.rel.work_50 {
 
 	.side-menu li {
 		transition-property: transform;
-		transition-duration: 0.3s;
+		transition-duration: .3s;
 	}
 	.side-menu li:hover {
 		background-color:#193954;

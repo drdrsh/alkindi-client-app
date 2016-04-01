@@ -22,7 +22,6 @@ function onKeyUp(event) {
 }
 
 function onSidePanelCloseClicked() {
-    $('#info-panel').removeClass('is-slid');
     $('#top-panel').removeClass('is-slid');
     $('#side-panel').removeClass('is-slid');
 }
