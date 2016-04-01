@@ -459,14 +459,24 @@ function selectNode(nodeId, locked) {
     if (nodeId) {
         var opts = {};
         if(locked) {
-            opts['locked'] = true;
-            opts['scale'] = 0.5;
+            opts = {
+                locked: true
+            }
         } else {
             opts = {
-                scale: 0.5,
                 animation: {duration: 250, easingFunction: "easeInOutQuart"}
             };
         }
+        opts['scale']  = 0.75;
+        opts['offset'] = { x:0, y:0};
+        var remainingSpace = $('#side-panel').offset().left / 2;
+        var windowCenterX = $(window).width() / 2;
+        console.log(remainingSpace);
+
+        if(remainingSpace > 10) {
+            opts.offset.x = remainingSpace - windowCenterX;
+        }
+
         graph.focus(nodeId, opts);
         graph.selectNodes([nodeId]);
     }
