@@ -273,7 +273,7 @@ li.search input.active {
 }
 
 #top-panel.is-slid  {
-	transform: translate3d(-420px, 0, 0);
+	transform: translate3d(-250px, 0, 0);
 	transition-delay: 0s;
 }
 
@@ -310,7 +310,7 @@ li.search input.active {
 	font-size: 1.0em;
 }
 #info-panel  h2 a{
-	font-size: 0.7em;
+	font-size: 0.9em;
 }
 #info-panel a {
 	color: #D6D27D;
@@ -331,6 +331,7 @@ li.search input.active {
 #info-panel ol {
 	list-style-position: inside;
 	padding-right: 10px;
+	font-size:90%
 }
 #info-panel li:hover {
 	background-color: rgba(255, 255, 255, 0.05);
@@ -658,7 +659,7 @@ span.rel.work_50 {
 }
 
 
-@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 550px) {
 
 	#logo {
 		height: 110px;
