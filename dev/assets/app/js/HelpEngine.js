@@ -232,7 +232,7 @@
 
     function step1() {
         graph.stabilize();
-        displayHelpBubble({left: 100, top: 100, text: helpStrings[0]});
+        displayHelpBubble({left: 20, top: 20, text: helpStrings[0]});
     }
 
     var firstNode = null;
@@ -252,7 +252,7 @@
         edge       = edgeDS.get(edgeId);
         centerOnNode([firstNode.id, secondNode.id], function() {
             graph.selectEdges([edgeId], true);
-            displayHelpBubble({left: 100, top: 100, text: helpStrings[1]});
+            displayHelpBubble({left: 20, top: 20, text: helpStrings[1]});
         });
     }
 
@@ -262,27 +262,27 @@
             .replace('$2', edge.label)
             .replace('$3', secondNode.label);
         centerOnNode([firstNode.id, secondNode.id], function(){
-            displayHelpBubble({left: 100, top: 100, text: str});
+            displayHelpBubble({left: 20, top: 20, text: str});
         });
     }
 
     function step4() {
         centerOnNode([firstNode.id, secondNode.id], function(){
-            displayHelpBubble({left: 100, top: 100, text: helpStrings[3]});
+            displayHelpBubble({left: 20, top: 20, text: helpStrings[3]});
         });
     }
 
     function step5(){
-        displayHelpBubble( {target:'.vis-button.vis-up', relation:'left', arrow: true, text: helpStrings[4]});
+        displayHelpBubble( {left: 20, top: 20, text: helpStrings[4]});
     }
 
 
     function step6() {
-        displayHelpBubble( {target:'.search input', relation:'bottom', arrow: true, text: helpStrings[5]});
+        displayHelpBubble( {target:'.search', relation:'left', arrow: true, text: helpStrings[5]});
     }
 
     function step7() {
-        displayHelpBubble( {target:'#lower-left-pane', relation:'top', arrow: true, text: helpStrings[6]});
+        displayHelpBubble( {target:'.social-media-pane', relation:'left', arrow: true, text: helpStrings[6]});
     }
 
     steps.push(step1);

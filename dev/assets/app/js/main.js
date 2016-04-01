@@ -24,14 +24,29 @@ function onKeyUp(event) {
 function onSidePanelCloseClicked() {
     $('#info-panel').removeClass('is-slid');
     $('#top-panel').removeClass('is-slid');
+    $('#side-panel').removeClass('is-slid');
 }
 
 function onAboutClicked(event) {
-    $('#about-dialog').dialog('open');
     AlFehrestNS.HelpEngine.close();
+    document.body.style.cursor = "";
+    var $main = $("#top-panel");
+    var $dlg  = $("#info-panel");
+    var $side = $("#side-panel");
+
+    $main.addClass("is-slid");
+    $side.addClass("is-slid");
+
+        
+    var $ol  = $dlg.find("ol").html('');
+    var $p   = $dlg.find("p").html('').removeClass('loading');
+    $dlg.find("h1").html('عن التطبيق');
+    $p.html($('#about-dialog').html());
+    $dlg.find("h2").html('');
 }
 
 function onHelpClicked(event) {
+    onSidePanelCloseClicked();
     AlFehrestNS.HelpEngine.start();
 }
 
@@ -40,6 +55,7 @@ function onRestartClicked(event) {
         onRestartClicked.canRestart = true;
     }
     if(onRestartClicked.canRestart){
+        onSidePanelCloseClicked();
         restartNetwork();
         loadEntity(AlFehrestNS.Config('startupNodeId'));
         onRestartClicked.canRestart = false;
@@ -49,44 +65,51 @@ function onRestartClicked(event) {
     }
 }
 
+function onSearchFieldBlurred() {
+    var $container = $('#search-container');
+    var $searchBox  = $container.find('input');
+    $container.removeClass('active');
+    $searchBox.val('');
+}
+
+function onSearchClicked() {
+    onSidePanelCloseClicked();
+    var $container = $('#search-container');
+    $container.toggleClass('active');
+    var $searchBox  = $container.find('input');
+    $searchBox.focus();
+}
+
+
+function onSearchItemSelected(item) {
+    $('#search-container input').val('');
+    if(nodesDS.get(item.id)) {
+        selectNode(item.id, false);
+        return;
+    }
+    restartNetwork();
+    loadEntity(item.id);
+}
+
+function isSmallScreen() {
+}
+
 function setupUIEvents() {
 
     $('.share').click(onShareClicked);
     $('.about').click(onAboutClicked);
     $('.help').click(onHelpClicked);
     $('.restart').click(onRestartClicked);
-    $('#info-panel .close').click(onSidePanelCloseClicked);
+    $('.close').click(onSidePanelCloseClicked);
+    $('.side-menu .search').click(onSearchClicked);
+    $('#search-container input').blur(onSearchFieldBlurred);
+
     $(document).keyup(onKeyUp);
 
 }
 
 function setupDialogs() {
     
-    $('#about-dialog').dialog({
-        autoOpen: false,
-        modal: true,
-        maxWidth:600,
-        maxHeight: 300,
-        width: 600,
-        height: 300,
-        title: "نموذج تفاعلي لأنساب العرب في السيرة النبوية",
-        buttons: {
-            "العودة" : function() {
-                $('#about-dialog').dialog('close');
-            }
-        }
-    });
-
-    $( "#details-dialog" ).dialog({
-        autoOpen: false,
-        height:500,
-        width:700,
-        modal: true,
-        buttons: {
-            "العودة": function() {
-                $( this ).dialog( "close" );
-            }
-        }
-    });
+    $(window).resize(isSmallScreen);
 
 }

@@ -24,10 +24,11 @@ function setLabels(e) {
 }
 function loadDetails(id) {
 
-    document.body.style.cursor = "default";
-    var $main= $("#top-panel");
-    var $dlg = $("#info-panel");
-    var $p   = $dlg.find("p").addClass("loading");
+    document.body.style.cursor = "";
+    var $main = $("#top-panel");
+    var $dlg  = $("#info-panel");
+    var $side = $("#side-panel");
+    var $p   = $dlg.find("p").addClass("loading").html('');
     var $ol  = $dlg.find("ol").html('');
 
     $dlg.find("h1").html('');
@@ -38,7 +39,7 @@ function loadDetails(id) {
     }
 
     $main.addClass("is-slid");
-    $dlg.addClass("is-slid");
+    $side.addClass("is-slid");
 
     loadEntity(id).then(function(id, data) {
 
@@ -49,6 +50,8 @@ function loadDetails(id) {
             .find("h1")
             .removeClass("loading")
             .html(entity.name || entity.title);
+
+        $p.html(data.entity.bio);
 
         var href = '';
         if(entity._entity_type == 'authority') {
@@ -148,10 +151,14 @@ function loadDetails(id) {
                 + ' ← '
                 + toNameHTML;
 
-            $ol.append($("<li />").html(relText));
+            $ol.append($("<li />")
+                .click(function(){
+                    $(this).find('a').click();
+                })
+                .html(relText));
         }
         $ol.find('.entity-link').click(function(){
-            var id = $(this).attr('data-id')
+            var id = $(this).attr('data-id');
             loadDetails(id);
         });
         $p.parent().scrollTop(0);
@@ -207,15 +214,6 @@ function loadEntity(id) {
     return dfd.promise();
 }
 
-function onSearchItemSelected(item) {
-    $('.search input').val('');
-    if(nodesDS.get(item.id)) {
-        selectNode(item.id, false);
-        return;
-    }
-    restartNetwork();
-    loadEntity(item.id);
-}
 
 
 function restartNetwork() {
@@ -225,8 +223,9 @@ function restartNetwork() {
         nodesDS.clear();
         edgesDS.clear();
     }
-    var container = document.getElementById('graph-container');
 
+    var container = document.getElementById('graph-container');
+    var $canvas   = null;
     // create an array with nodesDS
     nodesDS = new vis.DataSet();
     edgesDS = new vis.DataSet();
@@ -268,11 +267,14 @@ function restartNetwork() {
         },
         interaction:{
             hover:true,
-            navigationButtons: true
+            navigationButtons: false
         },
         physics:{
-            barnesHut:{gravitationalConstant:-50000},
-            stabilization: {iterations:500}
+            barnesHut:{
+                gravitationalConstant:-10000,
+                avoidOverlap:1
+            },
+            stabilization: {iterations:150}
         },
         groups: {
             work: {
@@ -290,7 +292,8 @@ function restartNetwork() {
         }
     };
     AlFehrestNS.Graph = graph = new vis.Network(container, data, options);
-
+    $canvas   = $('#graph-container canvas');
+    console.log($canvas);
     var dblClickTimeout = null;
     graph.on('stabilized', function(event){
         var hasSeenHelp = AlFehrestNS.LocalStorage.retrieve('SeenHelp');
@@ -309,22 +312,31 @@ function restartNetwork() {
         }
     });
     graph.on('hoverNode', function(event){
-        document.body.style.cursor = "pointer";
+        $canvas.css('cursor', 'pointer');
         //neighbourhoodHighlight(event.node);
     });
     graph.on('blurNode', function(event){
-        document.body.style.cursor = "default";
+        $canvas.css('cursor', '');
         //neighbourhoodHighlight();
     });
     graph.on('hoverEdge', function(event){
-        document.body.style.cursor = "pointer";
-        //neighbourhoodHighlight(event.node);
+        $canvas.css('cursor', 'pointer');
     });
+    
+    graph.on('dragStart', function(event){
+        $canvas.css('cursor', 'grabbing');
+        onSearchFieldBlurred();
+    });
+    graph.on('dragEnd', function(event){
+        $canvas.css('cursor', '');
+    });
+    
     graph.on('blurEdge', function(event){
-        document.body.style.cursor = "default";
+        $canvas.css('cursor', '');
         //neighbourhoodHighlight();
     });
     graph.on('click', function(event) {
+        onSearchFieldBlurred();
         if(event.nodes.length) {
             window.clearTimeout(dblClickTimeout);
             dblClickTimeout = setTimeout(function(){
@@ -352,10 +364,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 'cb'    : onSearchItemSelected
             });
         }
-        $('.search input').blur(function(){
-            $(this).val("");
-        });
-        AlFehrestNS.SearchManager.attach($('.search input'));
+        AlFehrestNS.SearchManager.attach($('#search-container input'));
         AlFehrestNS.SearchManager.register(data);
         
     });
@@ -438,12 +447,13 @@ function renderNewItems(nodeId, data) {
 
 function selectNode(nodeId, locked) {
     if (nodeId) {
-        var opts = {}
+        var opts = {};
         if(locked) {
             opts['locked'] = true;
+            opts['scale'] = 0.5;
         } else {
             opts = {
-                scale: 1,
+                scale: 0.5,
                 animation: {duration: 250, easingFunction: "easeInOutQuart"}
             };
         }

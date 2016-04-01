@@ -20,7 +20,13 @@ AlFehrestNS.SearchManager = (function(){
         if(!mDomInput || mDomInput.length == 0)return;
 
         mDomInput.autocomplete({
-
+            /*
+            position: {
+                my : "center",
+                at: "right bottom",
+                collision: false
+            },
+            */
             open: function(event, ui){
                 $(".ui-autocomplete")
                     .addClass('search-menu')
@@ -60,6 +66,7 @@ AlFehrestNS.SearchManager = (function(){
                     if(result){
                         found++;
                     }
+
                     return result;
                 }));
             },
@@ -77,10 +84,15 @@ AlFehrestNS.SearchManager = (function(){
         });
 
         mDomInput.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            var shortLabel = item.label;
+            if(shortLabel.length > AlFehrestNS.Config('MAX_NAME_LENGTH')) {
+                shortLabel = shortLabel.substr(0, AlFehrestNS.Config('MAX_NAME_LENGTH')) + '...';
+            }
+
             return $( "<li></li>" )
                 .addClass(item.type)
                 .data( "item.autocomplete", item )
-                .append( "<a><span></span>" + item.label + "</a>" )
+                .append(shortLabel)
                 .appendTo( ul );
         };
     }

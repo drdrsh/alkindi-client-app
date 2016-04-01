@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 			options: {
 				port: 9000,
 				serve: {
-					path: './dist/'
+					path: './dev/'
 				}
 			}
 		},

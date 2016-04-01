@@ -2,14 +2,14 @@ AlFehrestNS.Config = function(key) {
     var config = {
         'production' : {
             'url' : 'http://api.alfehrest.org/alkindi/',
-            'startupNodeId' : 'authority_VkZJXeujYfRl',
-            'MAX_REL_COUNT' : 25,
+            'startupNodeId' : 'authority_N1Ypy-H_dBL0l',
+            'MAX_REL_COUNT' : 10,
             'MAX_NAME_LENGTH' : 50
         },
         'development' :{
-            'url' : 'http://api.alfehrest.org/alkindi/',
-            'startupNodeId' : 'authority_VkZJXeujYfRl',
-            'MAX_REL_COUNT': 25,
+            'url' : 'http://192.168.0.11:6001/alkindi/',
+            'startupNodeId' : 'authority_N1Ypy-H_dBL0l',
+            'MAX_REL_COUNT': 10,
             'MAX_NAME_LENGTH' : 50
         }
     };
