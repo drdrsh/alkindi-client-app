@@ -73,7 +73,7 @@ function loadDetails(id) {
             .append(
                 $('<a />')
                     .attr('target', '_blank')
-                    .html('[ زيارة صفحة ال'+_(entity._entity_type)+' بموقع الكندي 4]')
+                    .html(' زيارة صفحة ال'+_(entity._entity_type)+' بموقع الكندي 4')
                     .attr('href', href)
             );
         if(entity.alfehrest_id) {
@@ -84,7 +84,7 @@ function loadDetails(id) {
                 .append(
                     $('<a />')
                         .attr('target', '_blank')
-                        .html('[ صفحة ال'+_(entity._entity_type)+ ' بالفهرست ]')
+                        .html(' معاينة الكاتب على الخريطة ')
                         .attr('href', href)
                 )
         }
@@ -269,7 +269,7 @@ function restartNetwork() {
                 'highlight': '#0000aa'
             },
             font: {
-                size: 18,
+                size: 14,
                 face: 'Droid Arabic Naskh'
             },
             smooth: {
@@ -298,10 +298,6 @@ function restartNetwork() {
             authority: {
                 shape: 'image',
                 image: image('person')
-            },
-            prophet: {
-                shape: 'image',
-                image: image('prophet')
             }
         }
     };

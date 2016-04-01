@@ -10,6 +10,9 @@ html, body {
 	text-align:right;
 }
 
+body {
+	background-image:url("../images/bg.png");
+}
 .ui-menu .ui-menu-item{
 	float:none;
 }
@@ -82,12 +85,14 @@ html, body {
 	width:100%;
 	overflow: hidden;
 	left:100%;
+	opacity:.95;
 }
 
 #side-panel.is-slid {
 	margin-left:0px;
 	left:0;
 }
+
 
 body > h1.logo {
 	background-image: url('../images/logo.png');
@@ -130,6 +135,7 @@ a.share:hover {
 a.share.google   {  background-image: url('../images/google.png');  }
 a.share.facebook {  background-image: url('../images/facebook.png');  }
 a.share.twitter  {  background-image: url('../images/twitter.png');  }
+a.share.reddit  {  background-image: url('../images/reddit.png');  }
 
 .side-menu {
 	margin:0;
@@ -155,9 +161,7 @@ a.share.twitter  {  background-image: url('../images/twitter.png');  }
 	background-color:#18292e;
 }
 
- .side-menu li:hover {
-	background-color:#193954;
-}
+
 
 .side-menu li.close {
 	background-image: url("../images/close.png");
@@ -266,14 +270,10 @@ li.search input.active {
 	z-index:1;
 	transition-property: transform;
 	transition-duration: 0.3s;
-	background-color:white;
-	box-shadow: 0px 0px 10px black;
 	transform: translate3d(0, 0, 0);
-	background-image:url("../images/bg.png");
 }
 
 #top-panel.is-slid  {
-	transform: translate3d(-250px, 0, 0);
 	transition-delay: 0s;
 }
 
@@ -690,8 +690,8 @@ span.rel.work_50 {
 	.social-media-pane {
 		position: absolute;
 		bottom: 10px;
-		left:10px;
-		right:10px;
+		left:3px;
+		right:3px;
 		width:auto;
 	}
 
@@ -721,7 +721,26 @@ span.rel.work_50 {
 
 
 	a.share {
-		margin-right: 18px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
+	.side-menu li {
+		transition-property: transform;
+		transition-duration: 0.3s;
+	}
+	.side-menu li:hover {
+		background-color:#193954;
+	}
+
+	.is-slid .side-menu li:hover {
+		background-color:transparent;
+		transform: translate3d(0, -4px, 0);
+	}
+
+	.is-slid a.share {
+		margin-left: 0px;
+		margin-right: 0px;
 	}
 
 	body > h1.logo {
