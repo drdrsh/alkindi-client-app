@@ -69,13 +69,27 @@ function loadDetails(id) {
                 + ((data.rel['incoming'].length + data.rel['outgoing'].length))
                 + ' علاقة في قاعدة البيانات '
             )
+            .append( $('<br>') )
             .append(
                 $('<a />')
                     .attr('target', '_blank')
-                    .html('[ زيارة صفحة '+_(entity._entity_type)+' بموقع الكندي 4]')
+                    .html('[ زيارة صفحة ال'+_(entity._entity_type)+' بموقع الكندي 4]')
                     .attr('href', href)
             );
-
+        if(entity.alfehrest_id) {
+            href = 'http://alfehrest.org/?lang=ar#!scholar=' + entity.alfehrest_id;
+            $dlg
+                .find("h2")
+                .append( $('<br>') )
+                .append(
+                    $('<a />')
+                        .attr('target', '_blank')
+                        .html('[ صفحة ال'+_(entity._entity_type)+ ' بالفهرست ]')
+                        .attr('href', href)
+                )
+        }
+         /*
+        */
         function relSort(a, b) {
             //Author -[Wrote]-> Work relationship should always come first
             if (a.type == 'work.3' && a.firstEntityType != a.secondEntityType) {
@@ -271,7 +285,7 @@ function restartNetwork() {
         },
         physics:{
             barnesHut:{
-                gravitationalConstant:-10000,
+                gravitationalConstant:-15000,
                 avoidOverlap:1
             },
             stabilization: {iterations:150}
@@ -293,7 +307,7 @@ function restartNetwork() {
     };
     AlFehrestNS.Graph = graph = new vis.Network(container, data, options);
     $canvas   = $('#graph-container canvas');
-    console.log($canvas);
+
     var dblClickTimeout = null;
     graph.on('stabilized', function(event){
         var hasSeenHelp = AlFehrestNS.LocalStorage.retrieve('SeenHelp');
