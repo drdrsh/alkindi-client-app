@@ -203,6 +203,36 @@ function shuffle(array) {
     return newArray;
 }
 
+function processData(data) {
+
+    var outgoing = [];
+    var incoming = [];
+    var currentId = data.entity.id;
+    for(var idx in data.relationships) {
+        for(var i=0; i<data.relationships[idx].length; i++) {
+            var rel = data.relationships[idx][i];
+            if(rel.firstEntityId == currentId && nodesDS.get(rel.secondEntityId)) {
+                outgoing.push(rel);
+                data.relationships[idx].splice(i, 1);
+            }
+            if(rel.secondEntityId == currentId && nodesDS.get(rel.firstEntityId)) {
+                incoming.push(rel);
+                data.relationships[idx].splice(i, 1);
+            }
+        }
+    }
+
+
+    var maxRelCount = AlFehrestNS.Config('MAX_REL_COUNT');
+
+    var addedIncoming = (data.relationships['incoming']).slice(0, Math.max(0, maxRelCount - incoming.length));
+    var addedOutgoing = (data.relationships['outgoing']).slice(0, Math.max(0, maxRelCount - outgoing.length));
+
+    data.relationships['incoming'] = incoming.concat(addedIncoming);
+    data.relationships['outgoing'] = outgoing.concat(addedOutgoing);
+
+}
+
 function loadEntity(id) {
     var dfd = $.Deferred();
     if(fullDataset[id]) {
@@ -212,19 +242,16 @@ function loadEntity(id) {
     $('body').addClass('loading');
     getEntityData(id).then(function(data){
 
-        fullDataset[id] = {
+        fullDataset[id] = JSON.parse(JSON.stringify({
             'loaded': true,
             'entity': data.entity,
             'rel'   : {
                 'incoming': data.relationships['incoming'],
                 'outgoing': data.relationships['outgoing']
             }
-        };
-        
-        data.relationships['incoming'] = 
-            shuffle(data.relationships['incoming']).slice(0, AlFehrestNS.Config('MAX_REL_COUNT'));
-        data.relationships['outgoing'] = 
-            shuffle(data.relationships['outgoing']).slice(0, AlFehrestNS.Config('MAX_REL_COUNT'));
+        }));
+
+        processData(data);
 
 
         renderNewItems(id, data);
@@ -295,9 +322,6 @@ function restartNetwork() {
             font: {
                 size: 14,
                 face: 'Droid Arabic Naskh'
-            },
-            smooth: {
-                type: 'dynamic'
             },
             selfReferenceSize: 75,
             length: 300,
@@ -481,17 +505,11 @@ document.addEventListener('DOMContentLoaded', function(){
         AlFehrestNS.SearchManager.register(entityDS, onSearchItemSelected);
 
     });
-    var startupNodes = AlFehrestNS.Config('startupNodeId');
-    if(!Array.isArray(startupNodes)) {
-        startupNodes = [AlFehrestNS.Config('startupNodeId')];
-    }
-    for(var i=0; i<startupNodes.length; i++) {
-        loadEntity(startupNodes[i]);
-    }
+    loadEntity(AlFehrestNS.Config('startupNodeId'));
 });
 
 
-function addLinks(data) {
+function addLinks(parentNode, data) {
 
     for(var idx in data.relationships) {
         for (var i = 0; i < data.relationships[idx].length; i++) {
@@ -518,7 +536,7 @@ function addLinks(data) {
     }
 }
 
-function addNodes(data) {
+function addNodes(parentNode, data) {
     //TODO: Avoid duplication
 
     var mainEntity = data.entity;
@@ -528,7 +546,18 @@ function addNodes(data) {
     mainEntity.loaded = true;
     mainEntity.nodeType = 'entity';
     mainEntity.group = mainEntity._entity_type;
+
+    var x = undefined;
+    var y = undefined;
+    if(parentNode) {
+        var pos = graph.getPositions([parentNode.id]);
+        x = pos[parentNode.id].x;
+        y = pos[parentNode.id].y;
+    }
     setLabels(mainEntity);
+
+    mainEntity.x = x;
+    mainEntity.y = y;
 
     try {
         nodesDS.add(mainEntity);
@@ -546,6 +575,8 @@ function addNodes(data) {
             e.loaded = false;
             e.group = type;
             setLabels(e);
+            e.x = x;
+            e.y = y;
 
             try {
                 nodesDS.add(e);
@@ -558,8 +589,10 @@ function addNodes(data) {
 }
 
 function renderNewItems(nodeId, data) {
-    addNodes(data);
-    addLinks(data);
+    var parentNode = nodesDS.get(nodeId);
+
+    addNodes(parentNode, data);
+    addLinks(parentNode, data);
     if(timeline) {
         addEntityToTimeline(data);
     }
