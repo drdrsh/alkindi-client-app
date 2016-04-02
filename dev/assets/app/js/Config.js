@@ -3,7 +3,7 @@ AlFehrestNS.Config = function(key) {
         'production' : {
             'url' : 'http://api.alfehrest.org/alkindi/',
             'startupNodeId' : 'work_d41bf16e6a9e3',
-            'MAX_REL_COUNT': 10,
+            'MAX_REL_COUNT': 5,
             'MAX_NAME_LENGTH' : 50
         },
         'development' :{
