@@ -204,9 +204,17 @@
 
 
         var selectorName = ".triangle-border." + arrowPosition + ":";
-        var diffX = bubbleLeft - targetData.left;
-        var diffY = bubbleTop - targetData.top;
 
+        var diffX = 0;
+        var diffY = 0;
+        if(bubbleSize.width >= targetData.width) {
+            diffX = bubbleLeft - targetData.left;
+        }
+        if(bubbleSize.height >= targetData.height) {
+            diffY = bubbleTop - targetData.top;
+        }
+
+        console.log(diffX, diffY);
         if(arrowPosition == 'left' || arrowPosition == 'right') {
             addStylesheetRules([
                 selectorName + 'before' + "{ top : " + Math.abs(diffY) + "px }",
@@ -276,22 +284,19 @@
         displayHelpBubble( {left: 20, top: 20, text: helpStrings[4]});
     }
 
-
     function step6() {
-        displayHelpBubble( {target:'.search', relation:'left', arrow: true, text: helpStrings[5]});
+        displayHelpBubble( {target:'#timeline-container', relation:'top', arrow: true, text: helpStrings[5]});
     }
 
     function step7() {
-        displayHelpBubble( {target:'.social-media-pane', relation:'left', arrow: true, text: helpStrings[6]});
+        displayHelpBubble( {target:'.search', relation:'left', arrow: true, text: helpStrings[6]});
     }
 
-    steps.push(step1);
-    steps.push(step2);
-    steps.push(step3);
-    steps.push(step4);
-    steps.push(step5);
-    steps.push(step6);
-    steps.push(step7);
+    function step8() {
+        displayHelpBubble( {target:'.social-media-pane', relation:'left', arrow: true, text: helpStrings[7]});
+    }
+
+
 
     function centerOnNode(node, cb) {
         var duration = 500;
@@ -311,6 +316,18 @@
     }
 
     function start() {
+        steps = [];
+        steps.push(step1);
+        steps.push(step2);
+        steps.push(step3);
+        steps.push(step4);
+        steps.push(step5);
+        if(AlFehrestNS.Timeline) {
+            steps.push(step6);
+        }
+        steps.push(step7);
+        steps.push(step8);
+
         isHelpRunning = true;
         helpStrings = _('help_steps');
 

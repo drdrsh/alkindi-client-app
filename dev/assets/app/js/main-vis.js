@@ -177,7 +177,10 @@ function loadDetails(id) {
         });
         $p.parent().scrollTop(0);
         $dlg.simplebar('recalculate');
-
+        //Fix for firefox
+        setTimeout(function() {
+            $dlg.simplebar('recalculate');
+        }, 555);
     });
 
 }
@@ -250,13 +253,13 @@ function restartNetwork() {
     nodesDS = new vis.DataSet();
     edgesDS = new vis.DataSet();
     timelineDS = new vis.DataSet();
-    timelineDS.add([
-        {id: 'A', content: 'الخلفاء الراشدون', start: '632-01-01', end: '661-01-01', type: 'background', className:'rashidon'},
-        {id: 'B', content: 'الخلافة الأموية', start: '661-01-01', end: '750-01-01', type: 'background', className:'umayyad'},
-        {id: 'C', content: 'الخلافة العباسية', start: '750-01-01', end: '1258-01-01', type: 'background', className: 'abbasid'},
-        {id: 'E', content: 'الخلافة العثمانية', start: '1517-04-01', end: '1923-07-24', type: 'background', className: 'ottomons'}
-    ]);
 
+    timelineDS.add([
+        {id: 'A', content: 'الخلفاء الراشدون', start: '0632-01-01',  end: '0661-01-01', type: 'background', className:'rashidon'},
+        {id: 'B', content: 'الخلافة الأموية',    start: '0661-01-01',  end: '0750-01-01', type: 'background', className:'umayyad'},
+        {id: 'C', content: 'الخلافة العباسية',  start: '0750-01-01',  end: '1258-01-01', type: 'background', className: 'abbasid'},
+        {id: 'E', content: 'الخلافة العثمانية', start: '1517-04-01',  end: '1923-07-24', type: 'background', className: 'ottomons'}
+    ]);
 
     var data = {
         nodes: nodesDS,
@@ -444,11 +447,13 @@ function addEntityToTimeline(data) {
                 r.dates.died.year= diedG._year;
             }
 
-            r.start =r.dates.born.year + "-05-05";
-            r.end = r.dates.died.year  + "-05-05";
+            function pad(num, size){ return ('000000000' + num).substr(-size); }
+
+            r.start  = pad(r.dates.born.year, 4)  + "-05-05";
+            r.end    = pad(r.dates.died.year, 4)  + "-05-05";
+            console.log(r.start);
 
             r.content = r.name;
-            console.log(r.content);
             try {
                 timelineDS.add(r);
             } catch(e) {}

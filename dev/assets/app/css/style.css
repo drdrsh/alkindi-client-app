@@ -412,7 +412,6 @@ li.search input.active {
 	margin:0;
 	width:250px;
 	font-size:13px;
-	border-radius:8px;
 	padding:5px;
 	background-color:#333;
 	color:white;
@@ -558,17 +557,23 @@ span.rel.work_50 {
 @media only screen and (min-width: 550px) {
 
 
+	.vis-time-axis .vis-text{
+		padding:0;
+	}
+
 	#timeline-container {
 		background-color:white;
 		display: block;
 		position: fixed;
-		bottom: 0px;
+		bottom: -15px;
 		left:0;
 		width:100%;
 		height: 100px;
 		z-index: 10;
-		border: 1px solid #000;
-
+		cursor: ew-resize;
+		/*
+		transform: scale(.75, .75);
+		*/
 	}
 
 	#menu-panel {
@@ -685,4 +690,9 @@ span.rel.work_50 {
 		background-color:paleturquoise;
 	}
 
+	.vis-item .vis-item-content {
+		padding: 1px;
+		font-size: 80%;
+		cursor: pointer;
+	}
 }
