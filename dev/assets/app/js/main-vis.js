@@ -186,7 +186,7 @@ function loadDetails(id) {
 }
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-    var newArray = [];
+    var newArray = array;
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
 
@@ -224,6 +224,7 @@ function loadEntity(id) {
             shuffle(data.relationships['incoming']).slice(0, AlFehrestNS.Config('MAX_REL_COUNT'));
         data.relationships['outgoing'] = 
             shuffle(data.relationships['outgoing']).slice(0, AlFehrestNS.Config('MAX_REL_COUNT'));
+
 
         renderNewItems(id, data);
         dfd.resolve(id, fullDataset[id]);
@@ -331,6 +332,9 @@ function restartNetwork() {
         AlFehrestNS.Timeline = timeline =  new vis.Timeline(timeline_container, timelineDS, timelineOptions);
         timeline.on('select', function(event) {
             selectNode(event.items[0], true);
+            if($('#side-panel').is('.is-slid')) {
+                loadDetails(event.items[0]);
+            }
         });
     }
 
@@ -357,11 +361,9 @@ function restartNetwork() {
     });
     graph.on('hoverNode', function(event){
         $canvas.css('cursor', 'pointer');
-        //neighbourhoodHighlight(event.node);
     });
     graph.on('blurNode', function(event){
         $canvas.css('cursor', '');
-        //neighbourhoodHighlight();
     });
     graph.on('hoverEdge', function(event){
         $canvas.css('cursor', 'pointer');
@@ -377,8 +379,8 @@ function restartNetwork() {
     
     graph.on('blurEdge', function(event){
         $canvas.css('cursor', '');
-        //neighbourhoodHighlight();
     });
+
     graph.on('click', function(event) {
         onSearchFieldBlurred();
         if(event.nodes.length) {
@@ -430,7 +432,7 @@ function addEntityToTimeline(data) {
             }
 
             if(!r.dates.born.year) {
-                r.dates.born.year = r.dates.born.year - 60;
+                r.dates.born.year = r.dates.died.year - 60;
                 r.className = "born-approx";
             }
             if(!r.dates.died.year) {
