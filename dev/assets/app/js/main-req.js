@@ -9,10 +9,10 @@ function getEntityData(id) {
 }
 
 function getEntityList() {
-    //var url1 = AlFehrestNS.Config('url') + "authority";
+    var url1 = AlFehrestNS.Config('url') + "authority";
     var url2 = AlFehrestNS.Config('url') + "work";
     return $.when(
-        //$.ajax({url : url1, headers: { "Content-language": "ar" }}),
+        $.ajax({url : url1, headers: { "Content-language": "ar" }}),
         $.ajax({url : url2, headers: { "Content-language": "ar" }})
     );
 }

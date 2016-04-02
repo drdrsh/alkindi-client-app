@@ -3,10 +3,12 @@ $dlgDetails = null;
 $dlgAbout   = null;
 
 var graph = null;
+var timeline = null;
 var fullDataset = {};
 var nodesDS     = null;
 var edgesDS     = null;
-
+var entityDS    = null;
+var timelineDS  = null;
 function setLabels(e) {
     
     var t = (e.name || e.title);
@@ -232,15 +234,29 @@ function restartNetwork() {
     if(graph) {
         fullDataset = {};
         graph.destroy();
+        if(timeline) {
+            timeline.destroy();
+        }
         nodesDS.clear();
         edgesDS.clear();
+        timelineDS.clear();
     }
 
-    var container = document.getElementById('graph-container');
+    var graph_container    = document.getElementById('graph-container');
+    var timeline_container = document.getElementById('timeline-container');
     var $canvas   = null;
+
     // create an array with nodesDS
     nodesDS = new vis.DataSet();
     edgesDS = new vis.DataSet();
+    timelineDS = new vis.DataSet();
+    timelineDS.add([
+        {id: 'A', content: 'الخلفاء الراشدون', start: '632-01-01', end: '661-01-01', type: 'background', className:'rashidon'},
+        {id: 'B', content: 'الخلافة الأموية', start: '661-01-01', end: '750-01-01', type: 'background', className:'umayyad'},
+        {id: 'C', content: 'الخلافة العباسية', start: '750-01-01', end: '1258-01-01', type: 'background', className: 'abbasid'},
+        {id: 'E', content: 'الخلافة العثمانية', start: '1517-04-01', end: '1923-07-24', type: 'background', className: 'ottomons'}
+    ]);
+
 
     var data = {
         nodes: nodesDS,
@@ -299,10 +315,27 @@ function restartNetwork() {
             }
         }
     };
-    AlFehrestNS.Graph = graph = new vis.Network(container, data, options);
+
+    var timelineOptions = {
+        stack: false,
+        showCurrentTime: false,
+        zoomMax: 30758400000 * 1500,
+        zoomMin: 30758400000 * 10
+    };
+
+    AlFehrestNS.Graph = graph = new vis.Network(graph_container, data, options);
+    if($(window).width() > 500){
+        AlFehrestNS.Timeline = timeline =  new vis.Timeline(timeline_container, timelineDS, timelineOptions);
+        timeline.on('select', function(event) {
+            selectNode(event.items[0], true);
+        });
+    }
+
     $canvas   = $('#graph-container canvas');
 
     var dblClickTimeout = null;
+
+
     graph.on('stabilized', function(event){
         var hasSeenHelp = AlFehrestNS.LocalStorage.retrieve('SeenHelp');
         if(!hasSeenHelp){
@@ -355,28 +388,95 @@ function restartNetwork() {
     });
 }
 
+function addEntityToTimeline(data) {
+    var entities = [data.entity];
+    for(var idx in data.relationships) {
+        var rels = data.relationships[idx];
+        for(var i=0; i<rels.length; i++) {
+            entities.push(rels[i].entity);
+        }
+    }
+    var l = entities.length;
+    for(x=0; x<l; x++) {
+        var r = entities[x];
+
+        if (r._entity_type == 'work') {
+            continue;
+        }
+        /*
+        if (r.entity_type == 'work') {
+            if (r.year_value === null) {
+                return;
+            }
+            if (r.year_type === 'h') {
+                var JD = $.calendars.instance('islamic').newDate(r.year_value, 5, 1).toJD();
+                var g = $.calendars.instance('gregorian').fromJD(JD);
+                r.year_type = 'g';
+                r.year_value = g._year;
+            }
+            r.start = new Date(r.year_value, 5, 5);
+            r.content = r.title;
+            r.type = 'point';
+            //timelineDS.add(r);
+        }
+        */
+
+        if (r._entity_type == 'authority') {
+            if (!r.dates.born.year && !r.dates.died.year) {
+                return;
+            }
+
+            if(!r.dates.born.year) {
+                r.dates.born.year = r.dates.born.year - 60;
+                r.className = "born-approx";
+            }
+            if(!r.dates.died.year) {
+                r.dates.died.year = r.dates.born.year + 60;
+                r.className = "died-approx";
+            }
+
+            if (r.dates.type === 'h') {
+                var bornJD = $.calendars.instance('islamic').newDate(r.dates.born.year, 5, 1).toJD();
+                var diedJD = $.calendars.instance('islamic').newDate(r.dates.died.year, 5, 1).toJD();
+                var bornG = $.calendars.instance('gregorian').fromJD(bornJD);
+                var diedG = $.calendars.instance('gregorian').fromJD(diedJD);
+                r.dates.born.year= bornG._year;
+                r.dates.died.year= diedG._year;
+            }
+
+            r.start =r.dates.born.year + "-05-05";
+            r.end = r.dates.died.year  + "-05-05";
+
+            r.content = r.name;
+            console.log(r.content);
+            try {
+                timelineDS.add(r);
+            } catch(e) {}
+        }
+
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', function(){
 
-    startup();
-    getEntityList().then(function(a, b){
-        var records = [];
-        var data = [];
-        records = records.concat(a);
-        //records = records.concat(b[0]);
-        for(var i=0; i<records.length; i++) {
-            data.push({
-                'id'    : records[i].id,
-                'label' : records[i].name,
-                'value' : records[i].name,
-                'type'  : records[i].entity_type,
-                'cb'    : onSearchItemSelected
-            });
-        }
-        AlFehrestNS.SearchManager.attach($('#search-container input'));
-        AlFehrestNS.SearchManager.register(data);
-        
+    $(window).resize(function(){
+       if(!timeline) {
+           $('#timeline-container').hide('fast');
+       }
     });
-    //loadEntity('tribe_4JkxGYypI6l');
+    startup();
+    getEntityList().then(function(a, b) {
+
+        var records = [].concat(a[0], b[0]);
+
+        entityDS = new vis.DataSet();
+        entityDS.add(records);
+
+        AlFehrestNS.SearchManager.attach($('#search-container input'));
+        AlFehrestNS.SearchManager.register(entityDS, onSearchItemSelected);
+
+    });
     loadEntity(AlFehrestNS.Config('startupNodeId'));
 });
 
@@ -450,6 +550,9 @@ function addNodes(data) {
 function renderNewItems(nodeId, data) {
     addNodes(data);
     addLinks(data);
+    if(timeline) {
+        addEntityToTimeline(data);
+    }
     selectNode(nodeId, true);
 }
 
@@ -465,7 +568,7 @@ function selectNode(nodeId, locked) {
                 animation: {duration: 250, easingFunction: "easeInOutQuart"}
             };
         }
-        opts['scale']  = 0.75;
+        opts['scale']  = 0.5;
         opts['offset'] = { x:0, y:0};
         var remainingSpace = $('#side-panel').offset().left / 2;
         var windowCenterX = $(window).width() / 2;
@@ -476,6 +579,9 @@ function selectNode(nodeId, locked) {
 
         graph.focus(nodeId, opts);
         graph.selectNodes([nodeId]);
+        try {
+            timeline.setSelection([nodeId], {focus:true})
+        } catch(e) {}
     }
 }
 

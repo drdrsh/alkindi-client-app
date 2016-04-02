@@ -1,5 +1,5 @@
 AlFehrestNS.SearchManager = (function(){
-
+    var mCallback = null;
     function normalizeLetters(input){
         if(typeof input == 'object'){
             return input;
@@ -57,25 +57,29 @@ AlFehrestNS.SearchManager = (function(){
                 var matcher = new RegExp( $.ui.autocomplete.escapeRegex( req.term ), "i" );
                 var maxCount = 10;
                 var found = 0;
-                res( $.grep( mData, function( value ) {
-                    if(found >= maxCount){
-                        return false;
-                    }
-                    value = value.label || value.value || value;
-                    result = matcher.test( value ) || matcher.test( normalizeLetters( value ) );
-                    if(result){
-                        found++;
-                    }
 
-                    return result;
-                }));
+                res(
+                    mData.get({
+                        filter: function (item) {
+                            if (found >= maxCount) {
+                                return false;
+                            }
+                            var name = item.name || item.title;
+                            if (matcher.test(normalizeLetters(name))) {
+                                ++found;
+                                return true;
+                            }
+                            return false;
+                        }
+                    })
+                );
             },
 
             minLength: 2,
 
             select: function( event, ui ) {
-                if(ui.item.cb(ui.item)) {
-                    AlFehrestNS.UI.hideSearchBox();
+                if(mCallback) {
+                    mCallback(ui.item);
                 }
                 mDomInput.focus();
                 return false;
@@ -84,13 +88,13 @@ AlFehrestNS.SearchManager = (function(){
         });
 
         mDomInput.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-            var shortLabel = item.label;
+            var shortLabel = item.name || item.title;
             if(shortLabel.length > AlFehrestNS.Config('MAX_NAME_LENGTH')) {
                 shortLabel = shortLabel.substr(0, AlFehrestNS.Config('MAX_NAME_LENGTH')) + '...';
             }
 
             return $( "<li></li>" )
-                .addClass(item.type)
+                .addClass(item.entity_type)
                 .data( "item.autocomplete", item )
                 .append(shortLabel)
                 .appendTo( ul );
@@ -109,9 +113,10 @@ AlFehrestNS.SearchManager = (function(){
             prepareDomElement();
         },
 
-        register : function(elements){
-            $.each(elements, function(idx, obj){ mData.push(obj);});
+        register : function(dataset, cb){
+            mData = dataset;
             prepareDomElement();
+            mCallback = cb;
         }
     };
 

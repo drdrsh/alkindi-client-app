@@ -102,6 +102,9 @@ module.exports = function(grunt) {
                     'dist/js/scripts.js': [
                         "dev/assets/lib/jquery/jquery.js",
                         "dev/assets/lib/jquery-ui/jquery-ui.js",
+                        "dev/assets/lib/jquery-calendars/jquery.calendars.js",
+                        "dev/assets/lib/jquery-calendars/jquery.calendars.islamic.js",
+                        "dev/assets/lib/jquery-calendars/jquery.calendars.julian.js",
                         "dev/assets/lib/vis/vis.js",
                         "dev/assets/lib/simplebar/simplebar.js",
                         "dev/assets/app/js/Language.js",
@@ -175,7 +178,12 @@ module.exports = function(grunt) {
 
                     "dev/assets/lib/jquery-ui/jquery-ui.js" : "./jquery-ui/jquery-ui.js",
                     "dev/assets/lib/jquery-ui/jquery-ui.css" : "./jquery-ui/themes/start/jquery-ui.css",
-                    "dev/assets/lib/jquery-ui/images" : "./jquery-ui/themes/start/images"
+                    "dev/assets/lib/jquery-ui/images" : "./jquery-ui/themes/start/images",
+
+                    "dev/assets/lib/jquery-calendars/jquery.calendars.js":"./jq-calendars/jquery.calendars.js",
+                    "dev/assets/lib/jquery-calendars/jquery.calendars.islamic.js": "./jq-calendars/jquery.calendars.islamic.js",
+                    "dev/assets/lib/jquery-calendars/jquery.calendars.julian.js":  "./jq-calendars/jquery.calendars.julian.js"
+
                 }
             }
         },
