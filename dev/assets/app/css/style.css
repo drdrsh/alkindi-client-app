@@ -10,6 +10,10 @@ html, body {
 	text-align:right;
 }
 
+body {
+	background: linear-gradient(to bottom left, #eee, #fff);
+}
+
 body.loading #loading {
 	display: none;
 }
@@ -33,9 +37,6 @@ body.loading #loading {
 	opacity: .95;
 }
 
-body {
-	background-image:url("../images/bg.png");
-}
 .ui-menu .ui-menu-item{
 	float:none;
 }
