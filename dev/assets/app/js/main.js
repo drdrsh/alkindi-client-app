@@ -39,9 +39,9 @@ function onAboutClicked(event) {
         
     var $ol  = $dlg.find("ol").html('');
     var $p   = $dlg.find("p").html('').removeClass('loading');
-    $dlg.find("h1").html('عن التطبيق');
+    $dlg.find("h2").html('عن التطبيق');
     $p.html($('#about-dialog').html());
-    $dlg.find("h2").html('');
+    $dlg.find("h3").html('');
 }
 
 function onHelpClicked(event) {

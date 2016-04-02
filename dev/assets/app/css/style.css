@@ -151,7 +151,7 @@ a.share.reddit  {  background-image: url('../images/reddit.png');  }
 
 .side-menu li {
 	background-repeat:no-repeat;
-	background-position:right 5px center;
+	background-position:right 8px center;
 	padding-right: 50px;
 	padding-top: 10px;
 	padding-bottom:5px;
@@ -166,10 +166,13 @@ a.share.reddit  {  background-image: url('../images/reddit.png');  }
 .side-menu li:hover {
 	background-color:#00a97a;
 }
+.is-slid .side-menu li:hover {
+	background-color:transparent;
+}
 
 
 .side-menu li.close {
-	background-image: url("../images/close.png");
+	background-image: url("../images/close-base.png");
 	height:1px;
 	opacity:0.0;
 }
@@ -177,13 +180,25 @@ a.share.reddit  {  background-image: url('../images/reddit.png');  }
 	height:50px;
 	opacity:1.0;
 }
-.side-menu li.help { background-image: url("../images/help.png");  }
-.side-menu li.about { background-image: url("../images/about.png");  }
-.side-menu li.restart { background-image: url("../images/restart.png");  }
+.side-menu li.help { background-image: url("../images/help-base.png");  }
+.side-menu li.about { background-image: url("../images/about-base.png");  }
+.side-menu li.restart { background-image: url("../images/restart-base.png");  }
 .side-menu li.search {
+	position:relative;
+	background-image: url("../images/search-base.png");
+}
+
+.is-slid .side-menu li.close:hover { background-image: url("../images/close.png");  }
+.is-slid .side-menu li.help:hover { background-image: url("../images/help.png");  }
+.is-slid .side-menu li.about:hover { background-image: url("../images/about.png");  }
+.is-slid .side-menu li.restart:hover { background-image: url("../images/restart.png");  }
+.is-slid .side-menu li.search:hover {
 	position:relative;
 	background-image: url("../images/search.png");
 }
+
+
+
 li.search div {
 	transform: translate3d(0, 0, 0);
 	transition-property: transform, opacity;
@@ -233,38 +248,6 @@ li.search input.active {
 }
 
 
-
-#bottom-panel {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	right: 0;
-	z-index:0;
-	background-color:#333;
-	font-family: 'Lato', sans-serif;
-	overflow-y: hidden;
-}
-#bottom-panel h1,
-#bottom-panel h2 {
-	color: #ffffff;
-	font-size: 30px; font-weight: 300;
-}
-#bottom-panel .container {
-	width: 430px;
-	overflow-x: hidden;
-	overflow-y: visible;
-	padding-left: 5px;
-}
-
-#bottom-panel label {
-	color:white;
-}
-#bottom-panel h2 {
-	border-bottom: 1px solid #4d4d4d;
-	border-top: 1px solid #1a1a1a;
-	padding:10px;
-}
 #top-panel {
 	/*...*/
 	position: fixed;
@@ -278,10 +261,6 @@ li.search input.active {
 	transform: translate3d(0, 0, 0);
 }
 
-#top-panel.is-slid  {
-	transition-delay: 0s;
-}
-
 
 #info-panel .info-container {
 	position: relative;
@@ -291,31 +270,31 @@ li.search input.active {
 }
 
 
-
 #info-panel {
 	opacity:.88;
 	height: 100%;
 	z-index:3;
 	transition-property: transform;
 	transition-duration: .3s;
-	background-color:#18292e;
+	background-color:#000;
 	color:white;
 	box-sizing: content-box;
 	overflow: hidden;
 }
 
 
-#info-panel  h1 {
+#info-panel  h2 {
 	font-size: 1.4em;
-	border-bottom:1px solid #233940;
-	padding-bottom:4px;
 }
 
-#info-panel  h2 {
-	font-size: 1.0em;
+#info-panel  h3 {
+	font-size: 0.75em;
+	margin:0;
 }
-#info-panel  h2 a{
-	font-size: 0.9em;
+#info-panel  h3 a {
+	display:block;
+	margin-top:3px;
+	font-size: 1.1em;
 }
 #info-panel a {
 	color: #D6D27D;
@@ -519,52 +498,6 @@ li.search input.active {
 
 
 
-#top-left-pane {
-	position: absolute;
-	top:0px;
-	left:0px;
-}
-
-#top-left-pane > div {
-	float:left;
-	width: 50px;
-	height: 50px;
-	background-size: cover;
-	cursor: pointer;
-	margin-right: 10px;
-}
-
-
-#top-left-pane .pane-button {
-	transition-property: transform;
-	transition-duration: .3s;
-	transform: translate3d(0, 0, 0);
-	margin-top: 10px;
-	margin-left: 10px;
-}
-
-#top-left-pane .help {
-	background-image: url("../images/help.png");
-}
-
-#top-left-pane .about {
-	background-image: url("../images/info.png");
-}
-
-#top-left-pane .restart {
-	background-image: url("../images/restart.png");
-}
-
-#top-left-pane .pane-button:hover {
-	transform: translate3d(0, -7px, 0);
-}
-
-
-#lower-left-pane {
-	position: absolute;
-	bottom:25px;
-	left:15px;
-}
 
 
 
@@ -572,52 +505,6 @@ li.search input.active {
 
 
 
-div.vis-network div.vis-navigation div.vis-button.vis-left {
-	background-image: url("../images/leftArrow.png");
-	right:120px;
-	bottom: 10px;
-}
-
-div.vis-network div.vis-navigation div.vis-button.vis-right {
-	background-image: url("../images/rightArrow.png");
-	right:20px;
-	bottom: 10px;
-}
-
-div.vis-network div.vis-navigation div.vis-button.vis-down {
-	background-image: url("../images/downArrow.png");
-	right:70px;
-	bottom: 10px;
-}
-div.vis-network div.vis-navigation div.vis-button.vis-up {
-	background-image: url("../images/upArrow.png");
-	right:70px;
-	bottom: 50px;
-}
-
-div.vis-network div.vis-navigation div.vis-button.vis-zoomIn {
-	background-image: url("../images/plus.png");
-	right:120px;
-	bottom: 50px;
-}
-
-div.vis-network div.vis-navigation div.vis-button.vis-zoomOut {
-	background-image: url("../images/minus.png");
-	right:20px;
-	bottom: 50px;
-}
-
-div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
-	display:none;
-}
-
-div.vis-network div.vis-navigation div.vis-button:hover {
-	box-shadow: 0 0 3px 3px rgba(23, 89, 128, 0.48);
-}
-
-div.vis-network div.vis-navigation div.vis-button:active {
-	box-shadow: 0 0 1px 3px rgba(23, 109, 207, 0.95);
-}
 
 
 .ui-autocomplete .ui-menu-item.person {background-image:url('../images/person-icon.png');}
@@ -690,6 +577,12 @@ span.rel.work_50 {
 	}
 
 
+	#info-panel h1.logo {
+		width:auto;
+		height:100px;
+		background-size:contain;
+	}
+
 	.social-media-pane {
 		position: absolute;
 		bottom: 10px;
@@ -714,7 +607,7 @@ span.rel.work_50 {
 		width:50px;
 	}
 
-	#side-panel.is-slid  .logo {
+	#side-panel.is-slid #menu-panel .logo {
 		height:0;
 		opacity:0;
 	}
@@ -739,13 +632,16 @@ span.rel.work_50 {
 		transition-property: transform;
 		transition-duration: .3s;
 	}
+
 	.side-menu li:hover {
 		background-color:#00a97a;
 	}
 
+
 	.is-slid .side-menu li:hover {
-		background-color:#00a97a;
+		background-color: transparent;
 	}
+
 
 	.is-slid a.share {
 		margin-left: 0px;

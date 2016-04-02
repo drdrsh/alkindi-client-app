@@ -31,11 +31,11 @@ function loadDetails(id) {
     var $p   = $dlg.find("p").addClass("loading").html('');
     var $ol  = $dlg.find("ol").html('');
 
-    $dlg.find("h1").html('');
-    $dlg.find("h2").addClass("loading").html('');
+    $dlg.find("h2").html('');
+    $dlg.find("h3").addClass("loading").html('');
     var nodeData = nodesDS.get(id);
     if(nodeData) {
-        $dlg.find("h1").html(nodeData.name || nodeData.title);
+        $dlg.find("h2").html(nodeData.name || nodeData.title);
     }
 
     $main.addClass("is-slid");
@@ -47,7 +47,7 @@ function loadDetails(id) {
         var title= entity.name || entity.title;
 
         $dlg
-            .find("h1")
+            .find("h2")
             .removeClass("loading")
             .html(entity.name || entity.title);
 
@@ -61,7 +61,7 @@ function loadDetails(id) {
         }
 
         $dlg
-            .find("h2")
+            .find("h3")
             .removeClass("loading")
             .html(
                 _(entity._entity_type)
@@ -69,7 +69,6 @@ function loadDetails(id) {
                 + ((data.rel['incoming'].length + data.rel['outgoing'].length))
                 + ' علاقة في قاعدة البيانات '
             )
-            .append( $('<br>') )
             .append(
                 $('<a />')
                     .attr('target', '_blank')
@@ -79,8 +78,7 @@ function loadDetails(id) {
         if(entity.alfehrest_id) {
             href = 'http://alfehrest.org/?lang=ar#!scholar=' + entity.alfehrest_id;
             $dlg
-                .find("h2")
-                .append( $('<br>') )
+                .find("h3")
                 .append(
                     $('<a />')
                         .attr('target', '_blank')
@@ -471,8 +469,7 @@ function selectNode(nodeId, locked) {
         opts['offset'] = { x:0, y:0};
         var remainingSpace = $('#side-panel').offset().left / 2;
         var windowCenterX = $(window).width() / 2;
-        console.log(remainingSpace);
-
+ 
         if(remainingSpace > 10) {
             opts.offset.x = remainingSpace - windowCenterX;
         }
