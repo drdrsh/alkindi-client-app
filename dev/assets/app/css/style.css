@@ -10,6 +10,29 @@ html, body {
 	text-align:right;
 }
 
+body.loading #loading {
+	display: none;
+}
+
+#loading {
+	background-image:url('../images/loading.gif');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color:black;
+
+	display: none;
+	position: fixed;
+	width: 100px;
+	height: 100px;
+	left:50%;
+	top:50%;
+	margin-left: -50px;
+	margin-top: -50px;
+	z-index: 100;
+	border-radius: 10px;
+	opacity: .95;
+}
+
 body {
 	background-image:url("../images/bg.png");
 }
@@ -694,5 +717,8 @@ span.rel.work_50 {
 		padding: 1px;
 		font-size: 80%;
 		cursor: pointer;
+	}
+	.vis-point {
+		font-size:75%;
 	}
 }

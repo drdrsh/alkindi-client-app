@@ -89,6 +89,9 @@ AlFehrestNS.SearchManager = (function(){
 
         mDomInput.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
             var shortLabel = item.name || item.title;
+            if(!shortLabel) {
+                return;
+            }
             if(shortLabel.length > AlFehrestNS.Config('MAX_NAME_LENGTH')) {
                 shortLabel = shortLabel.substr(0, AlFehrestNS.Config('MAX_NAME_LENGTH')) + '...';
             }

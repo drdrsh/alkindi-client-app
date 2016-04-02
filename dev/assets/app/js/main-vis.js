@@ -209,6 +209,7 @@ function loadEntity(id) {
         selectNode(id, true);
         return dfd.resolve(id, fullDataset[id]).promise();
     }
+    $('body').addClass('loading');
     getEntityData(id).then(function(data){
 
         fullDataset[id] = {
@@ -227,6 +228,7 @@ function loadEntity(id) {
 
 
         renderNewItems(id, data);
+        $('body').removeClass('loading');
         dfd.resolve(id, fullDataset[id]);
     });
     return dfd.promise();
@@ -256,10 +258,14 @@ function restartNetwork() {
     timelineDS = new vis.DataSet();
 
     timelineDS.add([
-        {id: 'A', content: 'الخلفاء الراشدون', start: '0632-01-01',  end: '0661-01-01', type: 'background', className:'rashidon'},
-        {id: 'B', content: 'الخلافة الأموية',    start: '0661-01-01',  end: '0750-01-01', type: 'background', className:'umayyad'},
-        {id: 'C', content: 'الخلافة العباسية',  start: '0750-01-01',  end: '1258-01-01', type: 'background', className: 'abbasid'},
-        {id: 'E', content: 'الخلافة العثمانية', start: '1517-04-01',  end: '1923-07-24', type: 'background', className: 'ottomons'}
+        {id: 'B1', content: 'الخلفاء الراشدون', start: '0632-01-01',  end: '0661-01-01', type: 'background', className:'rashidon'},
+        {id: 'B2', content: 'الخلافة الأموية',    start: '0661-01-01',  end: '0750-01-01', type: 'background', className:'umayyad'},
+        {id: 'B3', content: 'الخلافة العباسية',  start: '0750-01-01',  end: '1517-04-01', type: 'background', className: 'abbasid'},
+        {id: 'B4', content: 'الخلافة العثمانية', start: '1517-04-01',  end: '1923-07-24', type: 'background', className: 'ottomons'},
+
+        {id: 'E1', content: 'سقوط بغداد',    start: '1258-01-01', type: 'point'},
+        {id: 'E2', content: 'احتلال بيت المقدس',    start: '1099-01-01', type: 'point'},
+        {id: 'E3', content: 'فتح القسطنطينية',    start: '1453-05-29', type: 'point'}
     ]);
 
     var data = {
@@ -331,9 +337,11 @@ function restartNetwork() {
     if($(window).width() > 500){
         AlFehrestNS.Timeline = timeline =  new vis.Timeline(timeline_container, timelineDS, timelineOptions);
         timeline.on('select', function(event) {
-            selectNode(event.items[0], true);
-            if($('#side-panel').is('.is-slid')) {
-                loadDetails(event.items[0]);
+            if(event.items && event.items[0][0] != 'E' && event.items[0][0] != 'B'){
+                selectNode(event.items[0], true);
+                if($('#side-panel').is('.is-slid')) {
+                    loadDetails(event.items[0]);
+                }
             }
         });
     }
@@ -351,14 +359,7 @@ function restartNetwork() {
         }
     });
 
-    graph.on('doubleClick', function(event) {
-        window.clearTimeout(dblClickTimeout);
-        if(event.nodes.length) {
-            if(!fullDataset[event.nodes[0]]) {
-                loadEntity(event.nodes[0]);
-            }
-        }
-    });
+
     graph.on('hoverNode', function(event){
         $canvas.css('cursor', 'pointer');
     });
@@ -384,11 +385,8 @@ function restartNetwork() {
     graph.on('click', function(event) {
         onSearchFieldBlurred();
         if(event.nodes.length) {
-            window.clearTimeout(dblClickTimeout);
-            dblClickTimeout = setTimeout(function(){
-                selectNode(event.nodes[0], true);
-                loadDetails(event.nodes[0]);
-            }, 250);
+            selectNode(event.nodes[0], true);
+            loadDetails(event.nodes[0]);
         }
     });
 }
@@ -453,7 +451,6 @@ function addEntityToTimeline(data) {
 
             r.start  = pad(r.dates.born.year, 4)  + "-05-05";
             r.end    = pad(r.dates.died.year, 4)  + "-05-05";
-            console.log(r.start);
 
             r.content = r.name;
             try {
@@ -484,7 +481,13 @@ document.addEventListener('DOMContentLoaded', function(){
         AlFehrestNS.SearchManager.register(entityDS, onSearchItemSelected);
 
     });
-    loadEntity(AlFehrestNS.Config('startupNodeId'));
+    var startupNodes = AlFehrestNS.Config('startupNodeId');
+    if(!Array.isArray(startupNodes)) {
+        startupNodes = [AlFehrestNS.Config('startupNodeId')];
+    }
+    for(var i=0; i<startupNodes.length; i++) {
+        loadEntity(startupNodes[i]);
+    }
 });
 
 
