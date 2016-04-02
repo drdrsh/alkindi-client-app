@@ -15,7 +15,7 @@ body {
 }
 
 body.loading #loading {
-	display: none;
+	display: block;
 }
 
 #loading {
