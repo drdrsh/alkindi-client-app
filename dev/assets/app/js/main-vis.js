@@ -42,6 +42,7 @@ function loadDetails(id) {
 
     $main.addClass("is-slid");
     $side.addClass("is-slid");
+    $('body').addClass('panel-open');
 
     loadEntity(id).then(function(id, data) {
 

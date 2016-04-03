@@ -24,6 +24,7 @@ function onKeyUp(event) {
 function onSidePanelCloseClicked() {
     $('#top-panel').removeClass('is-slid');
     $('#side-panel').removeClass('is-slid');
+    $('body').removeClass('panel-open');
 }
 
 function onAboutClicked(event) {
@@ -35,6 +36,7 @@ function onAboutClicked(event) {
 
     $main.addClass("is-slid");
     $side.addClass("is-slid");
+    $('body').addClass('panel-open');
 
         
     var $ol  = $dlg.find("ol").html('');
