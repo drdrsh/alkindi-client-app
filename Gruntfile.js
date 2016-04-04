@@ -35,6 +35,9 @@ module.exports = function(grunt) {
                         src: ['dev/**/*.png', 'dev/**/*.gif', 'dev/**/*.svg', 'dev/**/*.jpg'],
                         dest: 'dist/images',
                         filter: 'isFile'
+                    }, {
+                        src: 'dev/index.php',
+                        dest: 'dist/index.php'
                     }
                 ]
             }

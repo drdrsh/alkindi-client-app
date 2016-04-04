@@ -9,16 +9,37 @@ var nodesDS     = null;
 var edgesDS     = null;
 var entityDS    = null;
 var timelineDS  = null;
+
+
+function getStartupEntity() {
+    return getURLParam('id') || AlFehrestNS.Config('startupNodeId');
+}
+function getURLParam(name, url) {
+    if (!url){
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
+    var results = regex.exec(url);
+    if (!results) {
+        return null;
+    }
+    if (!results[2]){
+        return '';
+    }
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 function setLabels(e) {
     
     var t = (e.name || e.title);
-    
+
     if(e._entity_type == 'authority') {
         e.label= t.split('(')[0];
     } else {
         e.label = t;
         if(t.length > AlFehrestNS.Config('MAX_NAME_LENGTH')) {
-            e.label = t.substr(0, AlFehrestNS.Config('MAX_NAME_LENGTH')) + '...';
+            e.label = t.substr(0, AlFehrestNS.Config('MAX_NAME_LENGTH')) + '…';
         }
     }
     e.title = t;
@@ -49,6 +70,7 @@ function loadDetails(id) {
         var entity = data.entity;
         var title= entity.name || entity.title;
 
+
         $dlg
             .find("h2")
             .removeClass("loading")
@@ -56,12 +78,16 @@ function loadDetails(id) {
 
         $p.html(data.entity.bio);
 
+        var label= entity.name || entity.title;
         var href = '';
         if(entity._entity_type == 'authority') {
+            label = (label.split('('))[0];
             href = 'http://ideo-cairo.org/authority/' + entity.ideo_id + '?lang=ar';
         } else {
             href = 'http://ideo-cairo.org/work/view/' + entity.ideo_id + '?lang=ar';
         }
+        updateSocialMediaUrls(entity.id, label);
+
 
         $dlg
             .find("h3")
@@ -89,8 +115,7 @@ function loadDetails(id) {
                         .attr('href', href)
                 )
         }
-         /*
-        */
+
         function relSort(a, b) {
             //Author -[Wrote]-> Work relationship should always come first
             if (a.type == 'work.3' && a.firstEntityType != a.secondEntityType) {
@@ -506,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function(){
         AlFehrestNS.SearchManager.register(entityDS, onSearchItemSelected);
 
     });
-    loadEntity(AlFehrestNS.Config('startupNodeId'));
+    loadEntity(getStartupEntity());
 });
 
 
@@ -635,11 +660,9 @@ function image(name) {
 
 function startup() {
 
-    setupDialogs();
     setupUIEvents();
     restartNetwork();
-//    $("#info-panel").find('div').simplebar();
-
+    updateSocialMediaUrls(null, null);
 
 }
 

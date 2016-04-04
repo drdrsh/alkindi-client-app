@@ -13,6 +13,39 @@ function onShareClicked(event) {
     );
 }
 
+function updateSocialMediaUrls(id, text) {
+
+    var url = window.location.protocol + "//" + window.location.hostname + window.location.pathname;
+    var desc = '';
+    var metas = document.getElementsByTagName('meta');
+    for (var i=0; i<metas.length; i++) {
+        if (metas[i].getAttribute("name") == "description") {
+            desc = metas[i].getAttribute("content");
+            break;
+        }
+    }
+
+    if(id && text) {
+        url += '?id=' + id;
+        desc = text;
+        if(desc.length > 30) {
+            desc = desc.substr(0, 30) + '…';
+        }
+    }
+
+    var templates = {
+        'facebook': 'http://www.facebook.com/sharer.php?u=%u%',
+        'twitter' : 'https://twitter.com/share?url=%u%&text=%t%',
+        'reddit'  : 'https://www.reddit.com/submit?url=%u%&resubmit=true&title=%t%',
+        'google'  : 'https://plus.google.com/share?url=%u%'
+    };
+
+    for(var idx in templates) {
+        var hrefURL = templates[idx].replace('%u%', url).replace('%t%', desc);
+        $('.share.' + idx).attr('href', hrefURL);
+    }
+}
+
 function onKeyUp(event) {
 
     if (event.keyCode == 27) { // escape key maps to keycode `27`
@@ -25,6 +58,7 @@ function onSidePanelCloseClicked() {
     $('#top-panel').removeClass('is-slid');
     $('#side-panel').removeClass('is-slid');
     $('body').removeClass('panel-open');
+    updateSocialMediaUrls(null, null);
 }
 
 function onAboutClicked(event) {
@@ -58,7 +92,7 @@ function onRestartClicked(event) {
     if(onRestartClicked.canRestart){
         onSidePanelCloseClicked();
         restartNetwork();
-        loadEntity(AlFehrestNS.Config('startupNodeId'));
+        loadEntity(getStartupEntity());
         onRestartClicked.canRestart = false;
         setTimeout(function() {
             onRestartClicked.canRestart = true;
@@ -92,9 +126,6 @@ function onSearchItemSelected(item) {
     loadEntity(item.id);
 }
 
-function isSmallScreen() {
-}
-
 function setupUIEvents() {
 
     $('.share').click(onShareClicked);
@@ -104,13 +135,7 @@ function setupUIEvents() {
     $('.close').click(onSidePanelCloseClicked);
     $('.side-menu .search').click(onSearchClicked);
     $('#search-container input').blur(onSearchFieldBlurred);
-
     $(document).keyup(onKeyUp);
 
 }
 
-function setupDialogs() {
-    
-    $(window).resize(isSmallScreen);
-
-}
