@@ -14,6 +14,7 @@ var timelineDS  = null;
 function getStartupEntity() {
     return getURLParam('id') || AlFehrestNS.Config('startupNodeId');
 }
+
 function getURLParam(name, url) {
     if (!url){
         url = window.location.href;
@@ -65,11 +66,11 @@ function loadDetails(id) {
     $side.addClass("is-slid");
     $('body').addClass('panel-open');
 
-    loadEntity(id).then(function(id, data) {
+    loadEntity(id)
+        .then(function(id, data) {
 
         var entity = data.entity;
         var title= entity.name || entity.title;
-
 
         $dlg
             .find("h2")
@@ -259,6 +260,27 @@ function processData(data) {
 
 }
 
+function  showErrorMessage(text, callback) {
+
+    $error = $('#error');
+    $btn   = $error.find('button');
+    $p     = $error.find('p');
+
+    window.clearTimeout($error.data('timeout'));
+    $error.css('display', 'block').addClass('shown');
+    $btn.unbind();
+    $p.html(text);
+    $btn.click(function() {
+        $error.removeClass('shown');
+        var to = setTimeout(function() {
+            $error.css('display', 'none');
+        }, 1000);
+        $error.data('timeout', to);
+        callback();
+    });
+
+}
+
 function loadEntity(id) {
     var dfd = $.Deferred();
     if(fullDataset[id]) {
@@ -266,7 +288,18 @@ function loadEntity(id) {
         return dfd.resolve(id, fullDataset[id]).promise();
     }
     $('body').addClass('loading');
-    getEntityData(id).then(function(data){
+    getEntityData(id)
+        .fail(function(){
+            $('body').removeClass('loading');
+            if(id === AlFehrestNS.Config('startupNodeId')) {
+                showErrorMessage('عذرا ، لم نستطع الوصول إلى البيانات المطلوبة، تحقق من اتصالك بشبكة الانترنت', function(){
+                    loadEntity(id);
+                });
+            } else {
+                loadEntity(AlFehrestNS.Config('startupNodeId'));
+            }
+        })
+        .then(function(data){
 
         fullDataset[id] = JSON.parse(JSON.stringify({
             'loaded': true,
@@ -531,7 +564,10 @@ document.addEventListener('DOMContentLoaded', function(){
         AlFehrestNS.SearchManager.register(entityDS, onSearchItemSelected);
 
     });
-    loadEntity(getStartupEntity());
+    loadEntity(getStartupEntity())
+        .catch(function(){
+            console.log('fail');
+        })
 });
 
 

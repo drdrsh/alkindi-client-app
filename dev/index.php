@@ -1,6 +1,14 @@
 <?php
 define('API_URL', 'http://api.alfehrest.org/alkindi/');
 
+function do_fallback() {
+    $content = file_get_contents('index.html');
+    $content = str_replace('%T%', '', $content);
+    $content = str_replace('%U%', '', $content);
+    $content = str_replace('%D%', '', $content);
+    echo $content;
+    die;
+}
 function get_url($entityId, $language)
 {
     $allowedTypes = array('work', 'authority');
@@ -12,7 +20,7 @@ function get_url($entityId, $language)
     $validId = strlen($id) == 13;
     if (!$validType || !$validId) {
         http_response_code(404);
-        die;
+        do_fallback();
     }
     $fieldName = $entityType=='work'?'title':'name';
     $url = API_URL . "{$entityType}/{$entityId}/?fields=$fieldName";
@@ -34,12 +42,10 @@ function get_url($entityId, $language)
 
     if($response['http_code'] != 200) {
         http_response_code($response['http_code']);
-        die;
+        do_fallback();
     }
 
     $data = json_decode($content, true);
-
-
 
     $htmlResponse = file_get_contents('index.html');
 
@@ -56,11 +62,7 @@ if(!isset($_GET['lang'])) {
 
 
 if(!isset($_GET['id'])) {
-    $content = file_get_contents('index.html');
-    $content = str_replace('%T%', '', $content);
-    $content = str_replace('%U%', '', $content);
-    $content = str_replace('%D%', '', $content);
-    echo $content;
+    do_fallback();
 } else {
     echo get_url($_GET['id'], $_GET['lang']);
 }
