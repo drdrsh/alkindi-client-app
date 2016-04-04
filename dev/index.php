@@ -54,7 +54,7 @@ if(!isset($_GET['lang'])) {
     $_GET['lang'] = 'ar';
 }
 
-$_GET['id'] = 'work_d41bf16e6a9e3';
+
 if(!isset($_GET['id'])) {
     $content = file_get_contents('index.html');
     $content = str_replace('%T%', '', $content);
