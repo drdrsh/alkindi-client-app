@@ -38,6 +38,9 @@ module.exports = function(grunt) {
                     }, {
                         src: 'dev/index.php',
                         dest: 'dist/index.php'
+                    }, {
+                        src: 'dev/favicon.ico',
+                        dest: 'dist/favicon.ico'
                     }
                 ]
             }
