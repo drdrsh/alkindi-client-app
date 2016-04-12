@@ -564,10 +564,7 @@ document.addEventListener('DOMContentLoaded', function(){
         AlFehrestNS.SearchManager.register(entityDS, onSearchItemSelected);
 
     });
-    loadEntity(getStartupEntity())
-        .catch(function(){
-            console.log('fail');
-        })
+    loadEntity(getStartupEntity());
 });
 
 
