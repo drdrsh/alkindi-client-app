@@ -216,6 +216,7 @@ a.share.reddit  {  background-image: url('../images/reddit.png');  }
 	padding-right: 50px;
 	padding-top: 10px;
 	padding-bottom:5px;
+	background-size:35px 35px;
 	height: 50px;
 	box-sizing: border-box;
 	border-bottom:solid 1px rgba(255, 255, 255, 0.05);
@@ -244,19 +245,13 @@ a.share.reddit  {  background-image: url('../images/reddit.png');  }
 .side-menu li.help { background-image: url("../images/help-base.png");  }
 .side-menu li.about { background-image: url("../images/about-base.png");  }
 .side-menu li.restart { background-image: url("../images/restart-base.png");  }
-.side-menu li.search {
-	position:relative;
-	background-image: url("../images/search-base.png");
-}
+.side-menu li.search { background-image: url("../images/search-base.png");  }
 
 .is-slid .side-menu li.close:hover { background-image: url("../images/close.png");  }
 .is-slid .side-menu li.help:hover { background-image: url("../images/help.png");  }
 .is-slid .side-menu li.about:hover { background-image: url("../images/about.png");  }
 .is-slid .side-menu li.restart:hover { background-image: url("../images/restart.png");  }
-.is-slid .side-menu li.search:hover {
-	position:relative;
-	background-image: url("../images/search.png");
-}
+.is-slid .side-menu li.search:hover {  background-image: url("../images/search.png");  }
 
 
 
